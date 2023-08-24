@@ -24,19 +24,29 @@ async function searchHN(query) {
   return response.data;
 }
 
-app.get('/search', async (req, res) => {
-  const searchQuery = req.query.q;
-  if (!searchQuery) {
-    res.redirect(302, '/');
-    return;
-  }
+app.get('/search', async (req, res, next) => {
+  try {
+    const searchQuery = req.query.q;
+    if (!searchQuery) {
+      res.redirect(302, '/');
+      return;
+    }
 
-  const results = await searchHN(searchQuery);
-  res.render('search', {
-    title: `Search results for: ${searchQuery}`,
-    searchResults: results,
-    searchQuery,
-  });
+    const results = await searchHN(searchQuery);
+    res.render('search', {
+      title: `Search results for: ${searchQuery}`,
+      searchResults: results,
+      searchQuery,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.use(function (err, req, res, next) {
+  console.error(err);
+  res.set('Content-Type', 'text/html');
+  res.status(500).send('<h1>Internal Server Error</h1>');
 });
 
 const server = app.listen(process.env.PORT || 3000, () => {
