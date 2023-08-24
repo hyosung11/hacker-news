@@ -30,7 +30,11 @@ app.get('/search', async (req, res) => {
   }
 
   const results = await searchHN(searchQuery);
-  res.status(200).json(results);
+  res.render('search', {
+    title: `Search results for: ${searchQuery}`,
+    searchResults: results,
+    searchQuery,
+  });
 });
 
 const server = app.listen(process.env.PORT || 3000, () => {
