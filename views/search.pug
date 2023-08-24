@@ -26,7 +26,7 @@ block content
               |
               | on
               |
-              time.created-date #{story.created_at}
+              time.created-date #{dateFns.format(new Date(`${story.created_at}`), 'LLL dd, yyyy')}
               |
               |
               a.comments(target='_blank' rel='noreferrer noopener' href=`https://news.ycombinator.com/item?id=${story.objectID}`) #{story.num_comments} comments

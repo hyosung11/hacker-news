@@ -8,6 +8,8 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.set("view engine", "pug");
 
+app.locals.dateFns = require("date-fns");
+
 app.get("/", (req, res) => {
   res.render("home", {
     title: "Search Hacker News",
